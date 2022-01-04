@@ -131,7 +131,7 @@ ON BOMON.MABM = GIAOVIEN.MABM
 SELECT *FROM dbo.BOMON RIGHT JOIN dbo.GIAOVIEN
 ON BOMON.MABM = GIAOVIEN.MABM
 
-
+ 
 -- -----------------------------------------------------------------------------------------------------------------
  -- Bài 14: Union
  --Đôi khi, bạn có thể cần kết hợp dữ liệu mà chúng có cấu trúc giống nhau từ nhiều bảng thành một khi truy vấn.
@@ -253,12 +253,105 @@ SELECT *FROM THAMGIADT
  )
 
 
+-- sort DECREEMENT
+SELECT GV.MAGV FROM GIAOVIEN AS GV
+ORDER BY GV.MAGV DESC
+
+/*
+BAI TAP
+  1. XUAT RA THONG TIN GIAO VIEN CO HON 2 NGUOI THAN
+  2. XUAT RA danh sach cac giao vien lon tuoi hon 50% cac giao vien trong truong
+
+*/
+
+
+ -- -----------------------------------------------------------------------------------------------------------------
+--  Bài 18: Group by| HowKteam
+-- xuat ra danh sach ten bo mon va so luong giao vien cua bo mon do
+
+
+SELECT BOMON.TENBM,PHONG, COUNT(*) as "count" FROM dbo.BOMON , dbo.GIAOVIEN
+WHERE BOMON.MABM = GIAOVIEN.MABM
+GROUP BY TENBM, PHONG
+
+-- lay ra danh sach giao vien co luong > luong tb cua giao vien
+-- solution : lay ra tong luong giao vien -> tinh trung binh
+SELECT *FROM dbo.GIAOVIEN
+WHERE LUONG  > (SELECT SUM(GIAOVIEN."LUONG") AS "SALARY" FROM DBO.GIAOVIEN) /  (SELECT COUNT(*) FROM DBO.GIAOVIEN)
+
+-- CACH 2
+SELECT *FROM GIAOVIEN
+WHERE LUONG > (SELECT AVG(LUONG) FROM GIAOVIEN)
+
+-- XUAT RA TEN GIAO VIEN VA SO LUONG DE TAI GIAO VIEN DA LAM
+SELECT *FROM dbo.DETAI
+SELECT *FROM THAMGIADT
+
+SELECT HOTEN, COUNT(*) AS "SUM" FROM GIAOVIEN, THAMGIADT
+WHERE GIAOVIEN.MAGV = THAMGIADT.MAGV
+GROUP BY GIAOVIEN.MAGV, HOTEN
 
 
 
 /*
 BAI TAP
-  1. XUAT RA THONG TIN GIAO VIEN CO HON 2 NGUOI THAN
-  2. XUAT RA THONG TIN CUA KHOA CO NHIEU HON 2 GIAO VIEN
+1. Xuat ra giao vien va so luong nguoi than cua giao vien do
+*/
+SELECT GIAOVIEN.HOTEN, COUNT(*) from NGUOITHAN, GIAOVIEN
+WHERE GIAOVIEN.MAGV = NGUOITHAN.MAGV
+GROUP BY GIAOVIEN.HOTEN, NGUOITHAN.MAGV
+
+/*
+2. Xuat ra giao vien va so luong de tai da hoan thanh va giao vien do tham gia
+*/
+SELECT HOTEN, COUNT(*) AS "HOAN THANH" FROM THAMGIADT, GIAOVIEN
+WHERE GIAOVIEN.MAGV = THAMGIADT.MAGV AND KETQUA = N'Đạt'
+GROUP BY HOTEN, KETQUA
+-- NOTE : cột hiển thị phải là thuộc tính nằm trong group by hoặc là Agreeate Funtion
+/*
+  Agreeate Funtion
+
+  AVG()   - Return a average value
+  COUNT() - Return the number of rows
+  FIRST() - Return the first value
+  LAST()  - Return the last value
+  MAX()   - Return the largest value
+  MIN()   - Return the smallest value
+  ROUND() - Return a numeric filed to the number of decimal specifiel
+  SUM()   - Return the sum
 */
 
+/*
+Function 	Description
+ASCII	() 	      Return the ASCII code value of a character
+CHAR	() 	      Convert an ASCII value to a character
+CHARINDEX		()   Search for a substring inside a string starting from a specified location and return the position of the substring.
+CONCAT	() 	    Join two or more strings into one string
+CONCAT_WS	() 	  Concatenate multiple strings with a separator into a single string
+DIFFERENCE	() 	Compare the SOUNDEX() values of two strings
+FORMAT	()     	Return a value formatted with the specified format and optional culture
+LEFT	() 	      Extract a given a number of characters from a character string starting from the left
+LEN	() 	        Return a number of characters of a character string
+LOWER	() 	      Convert a string to lowercase
+LTRIM	() 	      Return a new string from a specified string after removing all leading blanks
+NCHAR  	()      Return the Unicode character with the specified integer code, as defined by the Unicode standard
+PATINDEX	() 	  Returns the starting position of the first occurrence of a pattern in a string.
+QUOTENAME	() 	  Returns a Unicode string with the delimiters added to make the input string a valid delimited identifier
+REPLACE	() 	    Replace all occurrences of a substring, within a string, with another substring
+REPLICAT	() E	  Return a string repeated a specified number of times
+REVERSE		()      Return the reverse order of a character string
+RIGHT	() 	        Extract a given a number of characters from a character string starting from the right
+RTRIM	() 	         Return a new string from a specified string after removing all trailing blanks
+SOUNDEX	() 	      Return a four-character (SOUNDEX) code of a string based on how it is spoken
+SPACE	() 	         Returns a string of repeated spaces.
+STR	()              Returns character data converted from numeric data.
+STRING_AGG	() 	  Concatenate rows of strings with a specified separator into a new string
+STRING_ESCAPE	() 	Escapes special characters in a string and returns a new string with escaped characters
+STRING_SPLIT	() 	A table-valued function that splits a string into rows of substrings based on a specified separator.
+STUFF	() 	        Delete a part of a string and then insert another substring into the string starting at a specified position.
+SUBSTRING	() 	    Extract a substring within a string starting from a specified location with a specified length
+TRANSLATE	() 	    Replace several single-characters, one-to-one translation in one operation.
+TRIM	() 	        Return a new string from a specified string after removing all leading and trailing blanks
+UNICODE	() 	      Returns the integer value, as defined by the Unicode standard, of a character.
+UPPER	()        Convert a string to uppercase
+*/
