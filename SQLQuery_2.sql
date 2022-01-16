@@ -453,3 +453,77 @@ CREATE view [Giáo dục miễn phí] as
 SELECT *FROM DBO.KHOA
 
 SELECT *FROM dbo.[Giáo dục miễn phí]
+
+SELECT *INTO GIAOVIEN2 
+FROM DBO.GIAOVIEN
+
+SELECT *FROM GIAOVIEN
+SELECT *FROM GIAOVIEN2
+UPDATE DBO.GIAOVIEN SET LUONG = 100000
+WHERE MAGV = '004'
+
+INSERT INTO GIAOVIEN2
+SELECT *FROM GIAOVIEN
+
+CREATE VIEW GIAOVIEN3 AS
+SELECT *FROM GIAOVIEN
+
+SELECT *FROM GIAOVIEN3
+SELECT *FROM GIAOVIEN
+
+UPDATE dbo.GIAOVIEN3 SET LUONG = 11
+WHERE MAGV = '004'
+
+
+-- -----------------------------------------------------------------------------------------------------------------
+              --  Bài 22: Check
+
+CREATE TABLE testCheck1
+(
+  ID INT PRIMARY KEY IDENTITY(1, 1),
+  LUONG INT CHECK(LUONG > 3000 AND LUONG < 9000)
+)
+
+SELECT *FROM testCheck1
+
+INSERT INTO dbo.testCheck1(LUONG)
+VALUES (3001)
+
+CREATE TABLE testCheck2
+(
+  ID INT PRIMARY KEY IDENTITY(1, 1),
+  LUONG INT ,
+  CHECK(LUONG > 3000 AND LUONG < 9000)
+)
+
+CREATE TABLE testCheck3
+(
+  ID INT PRIMARY KEY IDENTITY(1, 1),
+  LUONG INT, 
+  CONSTRAINT CK_Luong CHECK(LUONG > 3000 AND LUONG < 9000)
+)
+
+CREATE TABLE testCheck4
+(
+  ID INT PRIMARY KEY IDENTITY(1, 1),
+  LUONG INT 
+)
+
+INSERT INTO dbo.testCheck4(LUONG)
+VALUES (3001)
+
+DROP TABLE testCheck4
+
+SELECT *FROM DBO.testCheck4
+
+ALTER TABLE dbo.testCheck4 ADD  CONSTRAINT CK_Luong1 CHECK(LUONG > 3000 AND LUONG < 9000)
+
+
+
+
+
+-- -----------------------------------------------------------------------------------------------------------------
+              --  Bài 23: Indexes
+
+
+
