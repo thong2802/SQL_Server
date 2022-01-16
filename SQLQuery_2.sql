@@ -525,5 +525,13 @@ ALTER TABLE dbo.testCheck4 ADD  CONSTRAINT CK_Luong1 CHECK(LUONG > 3000 AND LUON
 -- -----------------------------------------------------------------------------------------------------------------
               --  Bài 23: Indexes
 
+-- Tao index tren bang Giao vien
+-- Tang toc do tim kiem <> giam toc do them, xoa , sua
 
+-- CHO PHEP CAC TRUONG TRUNG NHAU
+CREATE INDEX IndexName ON DBO.NGUOITHAN(MAGV)
 
+-- KHONG CHO PHEP CAC TRUONG TRUNG NHAU
+CREATE UNIQUE INDEX IndexNameUNIQUE ON GIAOVIEN(MAGV)
+
+SELECT *FROM NGUOITHAN
