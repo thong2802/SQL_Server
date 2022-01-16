@@ -355,3 +355,101 @@ TRIM	() 	        Return a new string from a specified string after removing all 
 UNICODE	() 	      Returns the integer value, as defined by the Unicode standard, of a character.
 UPPER	()        Convert a string to uppercase
 */
+
+
+
+
+
+ -- -----------------------------------------------------------------------------------------------------------------
+                          -- Bài 19: Group by - Having
+-- xuat ra so luong giao vien trong tung bo mon ma giao vien > 2
+-- HAVING giong nhu Where nhung gianh cho Group By 
+SELECT BOMON.MABM, COUNT(*) FROM DBO.BOMON, DBO.GIAOVIEN
+WHERE BOMON.MABM = GIAOVIEN.MABM
+GROUP BY DBO.BOMON.MABM
+HAVING COUNT(*) > 2
+
+-- Xuat ra muc luong va tong tuoi cua giao vien nhan muc luong do
+-- va co nguoi than
+-- va tuoi phai lon hon tuoi trung binh
+SELECT LUONG, SUM(YEAR(GETDATE()) - YEAR(GIAOVIEN.NGSINH)) FROM GIAOVIEN, NGUOITHAN
+WHERE GIAOVIEN.MAGV = NGUOITHAN.MAGV
+AND GIAOVIEN.MAGV IN (SELECT MAGV FROM NGUOITHAN)
+GROUP BY LUONG 
+HAVING YEAR(GETDATE() - YEAR(GIAOVIEN.NGSINH)) > 
+(
+  (SELECT SUM(YEAR(GETDATE()) - YEAR(GIAOVIEN.NGSINH)) FROM GIAOVIEN)
+  / (SELECT COUNT(*) FROM GIAOVIEN)
+)
+
+
+-- -----------------------------------------------------------------------------------------------------------------
+                                  -- Bài 20: Auto Increament|
+
+
+CREATE TABLE TestAuto
+(
+   ID INT PRIMARY KEY IDENTITY, -- tụ tăng trường này, phải là số        
+   Name NVARCHAR(100)
+)
+GO
+
+INSERT INTO dbo.TestAuto(Name) 
+VALUES(N'O')
+
+INSERT INTO TestAuto(Name) 
+VALUES(N'O')
+
+INSERT INTO TestAuto(Name) 
+VALUES(N'O')
+
+INSERT INTO TestAuto(Name) 
+VALUES(N'O')
+
+INSERT INTO TestAuto(Name) 
+VALUES(N'O')
+
+SELECT *from TestAuto
+DROP TABLE TestAuto
+
+
+-- -----------------------------------------------------------------------------------------------------------------
+--  Bài 21: View
+-- view là bảng ảo
+-- cập nhập dữ liệu liệu theo bảng và view truy cấp tới, mỗi khi lấy view ra sài.
+-- Tao bang luu ten giao vien, bo mon va luong
+SELECT HOTEN, TENBM, LUONG INTO LUONGGIAOVIEN FROM GIAOVIEN,  BOMON
+WHERE GIAOVIEN.MABM = BOMON.MABM
+
+SELECT *FROM LUONGGIAOVIEN
+
+UPDATE DBO.GIAOVIEN SET LUONG = 9000
+WHERE MAGV = '006'
+
+SELECT *FROM GIAOVIEN
+
+-- create view
+CREATE VIEW TestView AS 
+SELECT *FROM DBO.GIAOVIEN
+
+SELECT *FROM TestView
+
+UPDATE DBO.GIAOVIEN SET LUONG = 999000
+WHERE MAGV = '006'
+
+
+SELECT *FROM TestView
+
+DROP VIEW TestView
+
+-- update view
+ALTER VIEW TestView AS
+SELECT HOTEN FROM GIAOVIEN 
+
+SELECT *FROM TestView
+
+-- CUSTOMVIEW CO DAU
+CREATE view [Giáo dục miễn phí] as     
+SELECT *FROM DBO.KHOA
+
+SELECT *FROM dbo.[Giáo dục miễn phí]
