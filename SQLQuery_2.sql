@@ -535,3 +535,27 @@ CREATE INDEX IndexName ON DBO.NGUOITHAN(MAGV)
 CREATE UNIQUE INDEX IndexNameUNIQUE ON GIAOVIEN(MAGV)
 
 SELECT *FROM NGUOITHAN
+
+
+
+
+
+
+-- -----------------------------------------------------------------------------------------------------------------
+-- Bài 24: Kiểu dữ liệu tự định nghĩa
+
+-- Kieu du lieu tu dinh nghia
+-- EXEC  sp_addtype  'Ten kieu du lieu', 'Kieu du lieu thuc te', 'Not Null'(co hoac khong)
+
+EXEC sp_addtype 'Nname', 'nvarchar(100)', 'Not Null'
+
+CREATE TABLE TestType
+(
+  Name Nname,
+  Address NVARCHAR(500)
+)
+
+
+-- xoa kieu du lieu
+
+EXEC sp_droptype 'Nname'
